@@ -8,9 +8,14 @@ const updateUser = async(req, res)=>{
 }
 
 const deleteUser = async(req,res)=>{
-    console.log(req.query.id);
+    const id = req.query.id;
     const user = await deleteById(id);
-    res.status(200).send(user);
+    if(user instanceof Error){
+        res.status(404).send(user.message);
+    }else{
+        res.status(200).send(user);
+    }
+    
 }
 
 export default {updateUser, deleteUser};

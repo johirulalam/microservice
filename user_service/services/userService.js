@@ -1,4 +1,5 @@
 import models from "../models";
+import mongoose from "mongoose";
 
 export const saveUser = async (user)=>{
     const model = new models.User({username: user.username, createdAt: new Date() });
@@ -19,8 +20,14 @@ export const update = async(user)=>{
 
 export const deleteById = async(id)=>{
     let user = models.User;
-    let result = user.deleteOne({_id:id});
-    return result;
+    if(mongoose.Types.ObjectId.isValid(id)){
+        if(await user.findById(id)){
+            let result = user.deleteOne({_id:id});
+            return result;
+        }
+    }
+    return new Error('User not found by the id: '+id);
+    
 }
 
 export default saveUser;
