@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import authRoutes from "./routes/authRoutes";
+import adminUserRoutes from "./routes/admin/userRoutes";
 import models from "./models";
 import connectWithDb from "./mongodb";
 
@@ -11,7 +12,7 @@ const log = (msg) => console.log(msg);
 
 connectWithDb();
 app.use(authRoutes);
-
+app.use(adminUserRoutes);
 
 app.listen(3000, 'localhost', ()=>{
     console.log('node server is run in port 3000');
