@@ -6,4 +6,5 @@ const getAllUsers = async () => {
     return users;
 }
 
+
 export default  getAllUsers ;
