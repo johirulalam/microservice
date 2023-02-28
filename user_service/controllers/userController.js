@@ -8,8 +8,8 @@ const updateUser = async(req, res)=>{
 }
 
 const deleteUser = async(req,res)=>{
-    const body = req.body;
-    const user = await deleteById(body._id);
+    console.log(req.query.id);
+    const user = await deleteById(id);
     res.status(200).send(user);
 }
 
