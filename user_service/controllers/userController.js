@@ -11,7 +11,8 @@ const deleteUser = async(req,res)=>{
     const id = req.query.id;
     const user = await deleteById(id);
     if(user instanceof Error){
-        res.status(404).send(user.message);
+        const code = user.getCode();
+        res.status(code).send(user.message);
     }else{
         res.status(200).send(user);
     }

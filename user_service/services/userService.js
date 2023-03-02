@@ -1,5 +1,6 @@
 import models from "../models";
 import mongoose from "mongoose";
+import { NotFound } from "../utils/GeneralError";
 
 export const saveUser = async (user)=>{
     const model = new models.User({username: user.username, createdAt: new Date() });
@@ -26,7 +27,7 @@ export const deleteById = async(id)=>{
             return result;
         }
     }
-    return new Error('User not found by the id: '+id);
+    return new NotFound('User not found by the id: '+id);
     
 }
 
