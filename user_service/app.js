@@ -4,9 +4,9 @@ import bodyParser from "body-parser";
 import authRoutes from "./routes/authRoutes";
 import adminUserRoutes from "./routes/admin/userRoutes";
 import userRoutes from "./routes/userRoutes";
-
 import models from "./models";
 import connectWithDb from "./mongodb";
+import { handleErrors } from "./middlewares/handleErrors";
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,6 +17,7 @@ app.use(authRoutes);
 app.use(adminUserRoutes);
 app.use(userRoutes);
 
+app.use(handleErrors);
 app.listen(3000, 'localhost', ()=>{
     console.log('node server is run in port 3000');
 

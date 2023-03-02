@@ -7,14 +7,17 @@ const updateUser = async(req, res)=>{
     res.status(200).send(user);
 }
 
-const deleteUser = async(req,res)=>{
-    const id = req.query.id;
-    const user = await deleteById(id);
-    if(user instanceof Error){
-        const code = user.getCode();
-        res.status(code).send(user.message);
-    }else{
+const deleteUser = async(req,res, next)=>{
+    try{
+        const id = req.query.id;
+        const user = await deleteById(id);
+        if(user instanceof Error){
+            return next(user, req, res);
+        }
         res.status(200).send(user);
+
+    }catch(error){
+        return next(error, req, res);
     }
     
 }
