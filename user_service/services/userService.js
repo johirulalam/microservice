@@ -15,8 +15,9 @@ export const update = async(user)=>{
     if(model){
         model.username  = user.username;
         model.save();
+        return model;
     }
-    return model;
+    throw new NotFound('User not found by the id: '+id);
 }
 
 export const deleteById = async(id)=>{
@@ -27,7 +28,7 @@ export const deleteById = async(id)=>{
             return result;
         }
     }
-    return new NotFound('User not found by the id: '+id);
+    throw new NotFound('User not found by the id: '+id);
     
 }
 
