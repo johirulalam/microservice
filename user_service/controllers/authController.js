@@ -4,7 +4,7 @@ const signup = async (req, res, next) =>{
    try{
     const body = req.body;
     const user = await saveUser(body);
-    res.status(202).send(user._id);
+    res.status(202).send(user);
    }catch(error){
     return next(error, req, res);
    }
