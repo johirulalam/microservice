@@ -5,7 +5,7 @@ import authRoutes from "./routes/authRoutes";
 import adminUserRoutes from "./routes/admin/userRoutes";
 import userRoutes from "./routes/userRoutes";
 import models from "./models";
-import connectWithDb from "./mongodb";
+import {connectWithDb, url} from "./mongodb";
 import { handleErrors } from "./middlewares/handleErrors";
 import winston from "winston";
 import expressWinston from "express-winston";
@@ -46,20 +46,33 @@ const fileErrorTransport = new(winston.transports.DailyRotateFile)({
     filename: 'log-error-%DATE%.log',
     datePattern: 'yyyy-MM-DD-HH'
 });
+const mongoErrorTransport = new winston.transports.MongoDB({
+    db: url,
+    metaKey: 'meta'
+});
+const elasticsearchOptions = {
+    level: 'info',
+    clientOpts: { node: 'http://localhost:9200'},
+    indexPrefix: 'log-users'
+};
+const esTransport = new(ElasticsearchTransport)(elasticsearchOptions);
 const infoLogger = expressWinston.logger({
     transports: [
         new winston.transports.Console(),
-        fileInfoTransport
+        fileInfoTransport,
+        esTransport
     ],
     format: winston.format.combine(winston.format.colorize(), winston.format.json()),
     meta:true,
-    msg: getMessage
+    msg: '{"correlationId": "{{req.headers["x-correlation-id"]}}", "error": "{{err.message}}" }'
 });
 
 const ErrorLogger = expressWinston.logger({
     transports: [
         new winston.transports.Console(),
-        fileErrorTransport
+        fileErrorTransport,
+        mongoErrorTransport,
+        esTransport
     ],
     format: winston.format.combine(winston.format.colorize(), winston.format.json()),
     meta:true,
