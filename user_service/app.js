@@ -87,9 +87,8 @@ app.use(userRoutes);
 app.use(ErrorLogger);
 
 app.use(handleErrors);
-app.listen(3000, 'localhost', ()=>{
-    console.log('node server is run in port 3000');
 
-})
 
 log(models);
+
+export default app;
